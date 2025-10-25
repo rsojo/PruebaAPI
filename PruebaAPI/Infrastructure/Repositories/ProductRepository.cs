@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using PruebaAPI.Data;
-using PruebaAPI.Models;
+using PruebaAPI.Domain.Entities;
+using PruebaAPI.Domain.Interfaces;
+using PruebaAPI.Infrastructure.Persistence;
 
-namespace PruebaAPI.Repositories;
+namespace PruebaAPI.Infrastructure.Repositories;
 
 public class ProductRepository : Repository<Product>, IProductRepository
 {

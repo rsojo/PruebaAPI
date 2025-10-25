@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PruebaAPI.Models;
+using PruebaAPI.Domain.Entities;
 
-namespace PruebaAPI.Data.Configurations;
+namespace PruebaAPI.Infrastructure.Persistence.Configurations;
 
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {

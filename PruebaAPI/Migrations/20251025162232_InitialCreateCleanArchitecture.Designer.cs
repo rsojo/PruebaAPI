@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PruebaAPI.Data;
+using PruebaAPI.Infrastructure.Persistence;
 
 #nullable disable
 
 namespace PruebaAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251025155855_InitialCreateWithRepositoryPattern")]
-    partial class InitialCreateWithRepositoryPattern
+    [Migration("20251025162232_InitialCreateCleanArchitecture")]
+    partial class InitialCreateCleanArchitecture
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace PruebaAPI.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PruebaAPI.Models.Product", b =>
+            modelBuilder.Entity("PruebaAPI.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using PruebaAPI.Models;
+using PruebaAPI.Domain.Entities;
 using System.Reflection;
 
-namespace PruebaAPI.Data;
+namespace PruebaAPI.Infrastructure.Persistence;
 
 public class AppDbContext : DbContext
 {

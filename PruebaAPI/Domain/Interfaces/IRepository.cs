@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace PruebaAPI.Repositories;
+namespace PruebaAPI.Domain.Interfaces;
 
 public interface IRepository<T> where T : class
 {
@@ -11,5 +11,4 @@ public interface IRepository<T> where T : class
     Task UpdateAsync(T entity);
     Task DeleteAsync(T entity);
     Task<bool> ExistsAsync(int id);
-    Task<int> SaveChangesAsync();
 }

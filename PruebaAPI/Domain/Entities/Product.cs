@@ -1,4 +1,4 @@
-namespace PruebaAPI.Models;
+namespace PruebaAPI.Domain.Entities;
 
 public class Product
 {

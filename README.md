@@ -1,17 +1,18 @@
-# PruebaAPI - API REST con .NET 8, Docker y PostgreSQL
+# PruebaAPI - API REST con .NET 8, Docker, PostgreSQL y Clean Architecture
 
-API REST completa desarrollada con .NET 8, contenerizada con Docker y conectada a PostgreSQL.
+API REST completa desarrollada con .NET 8, implementando Clean Architecture, contenerizada con Docker y conectada a PostgreSQL.
 
 ## 🚀 Características
 
 - **Framework**: .NET 8 Web API
+- **Arquitectura**: Clean Architecture (4 capas)
+- **Patrones**: Repository, Unit of Work, Service Layer
 - **Base de datos**: PostgreSQL 16
 - **ORM**: Entity Framework Core con Npgsql
-- **Arquitectura**: Patrón Repository
+- **DTOs**: Separación entre modelos de dominio y API
 - **Contenerización**: Docker & Docker Compose
 - **Documentación**: Swagger/OpenAPI
 - **CRUD completo**: Operaciones para gestión de productos
-- **Configuración separada**: Entity Type Configurations en archivos independientes
 
 ## 📋 Prerequisitos
 
@@ -19,31 +20,64 @@ API REST completa desarrollada con .NET 8, contenerizada con Docker y conectada 
 - Docker Compose
 - (Opcional) .NET 8 SDK para desarrollo local
 
-## 🏗️ Estructura del Proyecto
+## 🏗️ Estructura del Proyecto (Clean Architecture)
 
 ```
 PruebaAPI/
 ├── PruebaAPI/
-│   ├── Controllers/
-│   │   └── ProductsController.cs      # Controlador REST con CRUD
-│   ├── Data/
-│   │   ├── Configurations/
-│   │   │   └── ProductConfiguration.cs # Configuración de entidad Product
-│   │   └── AppDbContext.cs            # Contexto de Entity Framework
-│   ├── Models/
-│   │   └── Product.cs                 # Modelo de datos
-│   ├── Repositories/
-│   │   ├── IRepository.cs             # Interfaz genérica de repositorio
-│   │   ├── Repository.cs              # Implementación genérica de repositorio
-│   │   ├── IProductRepository.cs      # Interfaz específica de productos
-│   │   └── ProductRepository.cs       # Implementación de repositorio de productos
-│   ├── Migrations/                    # Migraciones de EF Core
-│   ├── Program.cs                     # Configuración de la aplicación
-│   └── appsettings.json              # Configuración (connection strings)
-├── Dockerfile                         # Imagen Docker de la API
-├── docker-compose.yml                 # Orquestación de contenedores
-└── README.md
+│   ├── Domain/                          # ⭐ Capa de Dominio (Núcleo)
+│   │   ├── Entities/
+│   │   │   └── Product.cs              # Entidades de negocio
+│   │   └── Interfaces/
+│   │       ├── IRepository.cs          # Contratos genéricos
+│   │       ├── IProductRepository.cs   # Contratos específicos
+│   │       └── IUnitOfWork.cs          # Patrón Unit of Work
+│   │
+│   ├── Application/                     # ⭐ Capa de Aplicación (Casos de Uso)
+│   │   ├── DTOs/
+│   │   │   ├── ProductDto.cs          # DTO de lectura
+│   │   │   ├── CreateProductDto.cs    # DTO de creación
+│   │   │   └── UpdateProductDto.cs    # DTO de actualización
+│   │   ├── Interfaces/
+│   │   │   └── IProductService.cs     # Interfaz de servicio
+│   │   └── Services/
+│   │       └── ProductService.cs      # Lógica de aplicación
+│   │
+│   ├── Infrastructure/                  # ⭐ Capa de Infraestructura (Implementación)
+│   │   ├── Persistence/
+│   │   │   ├── AppDbContext.cs        # DbContext de EF Core
+│   │   │   └── Configurations/
+│   │   │       └── ProductConfiguration.cs # Config de entidades
+│   │   └── Repositories/
+│   │       ├── Repository.cs          # Repositorio genérico
+│   │       ├── ProductRepository.cs   # Repositorio específico
+│   │       └── UnitOfWork.cs          # Implementación UoW
+│   │
+│   ├── Presentation/                    # ⭐ Capa de Presentación (API)
+│   │   └── Controllers/
+│   │       └── ProductsController.cs  # Controlador REST
+│   │
+│   ├── Migrations/                     # Migraciones de EF Core
+│   ├── Program.cs                      # Configuración y DI
+│   └── appsettings.json               # Configuración
+│
+├── Dockerfile                          # Imagen Docker de la API
+├── docker-compose.yml                  # Orquestación de contenedores
+├── README.md                           # Este archivo
+└── CLEAN_ARCHITECTURE.md              # Documentación detallada de la arquitectura
 ```
+
+### 📐 Dependencias entre Capas
+
+```
+Presentation  →  Application  →  Domain  ←  Infrastructure
+    (API)         (Services)    (Entities)    (Data Access)
+```
+
+- **Domain**: No depende de nadie (núcleo puro)
+- **Application**: Depende solo de Domain
+- **Infrastructure**: Implementa interfaces de Domain
+- **Presentation**: Depende de Application
 
 ## 🐳 Ejecutar con Docker
 
@@ -279,23 +313,57 @@ docker-compose up
 
 ## 📝 Notas Técnicas
 
-- La API usa **Patrón Repository** para la capa de acceso a datos
-- Las configuraciones de entidades están separadas en archivos `IEntityTypeConfiguration`
-- Entity Framework Core con migraciones aplicadas automáticamente al inicio
-- Repositorio genérico (`IRepository<T>`) con métodos comunes reutilizables
-- Repositorio específico (`IProductRepository`) con métodos especializados de negocio
-- Inyección de dependencias configurada en `Program.cs`
+### Arquitectura
+- Implementa **Clean Architecture** con 4 capas bien definidas
+- **Domain Layer**: Entidades e interfaces de negocio (sin dependencias)
+- **Application Layer**: Casos de uso, servicios y DTOs
+- **Infrastructure Layer**: Acceso a datos con EF Core, repositorios
+- **Presentation Layer**: Controladores REST API
+
+### Patrones de Diseño
+- **Repository Pattern**: Abstracción del acceso a datos
+- **Unit of Work Pattern**: Gestión de transacciones y persistencia
+- **Service Layer Pattern**: Lógica de aplicación en servicios
+- **DTO Pattern**: Separación entre dominio y contratos de API
+
+### Tecnologías
+- Entity Framework Core con migraciones aplicadas automáticamente
+- Inyección de dependencias nativa de .NET
+- Repositorio genérico reutilizable
+- DTOs para prevenir over-posting y mejorar seguridad
 - El contenedor de la API espera a que PostgreSQL esté healthy antes de iniciar
 - Los datos de PostgreSQL se persisten en un volumen Docker
 
+### Ventajas
+- ✅ Alta testabilidad (interfaces mockeables)
+- ✅ Bajo acoplamiento entre capas
+- ✅ Alto cohesión dentro de cada capa
+- ✅ Fácil de extender y mantener
+- ✅ Independiente de frameworks y base de datos
+
 ## 🚀 Próximos Pasos
 
-- [ ] Agregar autenticación JWT
-- [ ] Implementar paginación en los endpoints
-- [ ] Agregar validaciones con FluentValidation
-- [ ] Configurar logs con Serilog
-- [ ] Agregar tests unitarios y de integración
+- [ ] Agregar AutoMapper para mapeo automático de DTOs
+- [ ] Implementar FluentValidation para validación de DTOs
+- [ ] Agregar pruebas unitarias y de integración
+- [ ] Implementar autenticación JWT
+- [ ] Agregar paginación genérica en repositorios
+- [ ] Implementar CQRS con MediatR
+- [ ] Agregar logging con Serilog
+- [ ] Implementar caché con Redis
+- [ ] Agregar health checks
 - [ ] Implementar CI/CD con GitHub Actions
+
+## 📚 Documentación Adicional
+
+- **[CLEAN_ARCHITECTURE.md](./CLEAN_ARCHITECTURE.md)** - Guía completa de Clean Architecture implementada
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Documentación del patrón Repository (versión anterior)
+
+## 🎓 Recursos de Aprendizaje
+
+- [Clean Architecture - Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [Clean Architecture Template - Jason Taylor](https://github.com/jasontaylordev/CleanArchitecture)
+- [Microsoft - Clean Architecture](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture)
 
 ## 📄 Licencia
 

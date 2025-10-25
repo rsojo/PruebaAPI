@@ -1,8 +1,9 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using PruebaAPI.Data;
+using PruebaAPI.Domain.Interfaces;
+using PruebaAPI.Infrastructure.Persistence;
 
-namespace PruebaAPI.Repositories;
+namespace PruebaAPI.Infrastructure.Repositories;
 
 public class Repository<T> : IRepository<T> where T : class
 {
@@ -52,10 +53,5 @@ public class Repository<T> : IRepository<T> where T : class
     {
         var entity = await _dbSet.FindAsync(id);
         return entity != null;
-    }
-
-    public virtual async Task<int> SaveChangesAsync()
-    {
-        return await _context.SaveChangesAsync();
     }
 }

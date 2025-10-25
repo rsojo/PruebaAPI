@@ -1,6 +1,6 @@
-using PruebaAPI.Models;
+using PruebaAPI.Domain.Entities;
 
-namespace PruebaAPI.Repositories;
+namespace PruebaAPI.Domain.Interfaces;
 
 public interface IProductRepository : IRepository<Product>
 {
