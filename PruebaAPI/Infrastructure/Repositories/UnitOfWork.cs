@@ -8,18 +8,18 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
     private IDbContextTransaction? _transaction;
-    private IProductRepository? _productRepository;
+    private IMarcaAutoRepository? _marcaAutoRepository;
 
     public UnitOfWork(AppDbContext context)
     {
         _context = context;
     }
 
-    public IProductRepository Products
+    public IMarcaAutoRepository MarcasAutos
     {
         get
         {
-            return _productRepository ??= new ProductRepository(_context);
+            return _marcaAutoRepository ??= new MarcaAutoRepository(_context);
         }
     }
 

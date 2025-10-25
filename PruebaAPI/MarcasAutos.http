@@ -1,0 +1,48 @@
+@host = http://localhost:8080
+@contentType = application/json
+
+### Obtener todas las marcas de autos
+GET {{host}}/api/MarcasAutos
+
+### Obtener marca por ID
+GET {{host}}/api/MarcasAutos/1
+
+### Buscar marcas por nombre
+GET {{host}}/api/MarcasAutos/buscar?nombre=toyota
+
+### Obtener marcas activas
+GET {{host}}/api/MarcasAutos/activas
+
+### Obtener marcas por país
+GET {{host}}/api/MarcasAutos/pais/Alemania
+
+### Obtener marcas por rango de año de fundación
+GET {{host}}/api/MarcasAutos/anio-fundacion?añoInicio=1900&añoFin=1950
+
+### Crear nueva marca
+POST {{host}}/api/MarcasAutos
+Content-Type: {{contentType}}
+
+{
+  "nombre": "Mercedes-Benz",
+  "paisOrigen": "Alemania",
+  "añoFundacion": 1926,
+  "sitioWeb": "https://www.mercedes-benz.com",
+  "esActiva": true
+}
+
+### Actualizar marca
+PUT {{host}}/api/MarcasAutos/6
+Content-Type: {{contentType}}
+
+{
+  "id": 6,
+  "nombre": "Mercedes-Benz AMG",
+  "paisOrigen": "Alemania",
+  "añoFundacion": 1926,
+  "sitioWeb": "https://www.mercedes-benz.com",
+  "esActiva": true
+}
+
+### Eliminar marca
+DELETE {{host}}/api/MarcasAutos/6

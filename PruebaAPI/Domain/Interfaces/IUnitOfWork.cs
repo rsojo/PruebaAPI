@@ -2,7 +2,7 @@ namespace PruebaAPI.Domain.Interfaces;
 
 public interface IUnitOfWork : IDisposable
 {
-    IProductRepository Products { get; }
+    IMarcaAutoRepository MarcasAutos { get; }
     Task<int> SaveChangesAsync();
     Task BeginTransactionAsync();
     Task CommitTransactionAsync();
