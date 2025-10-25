@@ -10,7 +10,7 @@ RESTful API for managing car brands built with .NET 8, PostgreSQL, and Docker. I
 - **Database**: PostgreSQL 16 with Entity Framework Core
 - **Containerization**: Docker & Docker Compose
 - **Documentation**: Swagger/OpenAPI
-- **Testing**: xUnit, FluentAssertions, Moq (45 tests, 47.5% coverage)
+- **Testing**: xUnit, FluentAssertions, Moq (45 tests)
 - **CRUD Operations**: Complete car brand management
 
 ## Prerequisites
