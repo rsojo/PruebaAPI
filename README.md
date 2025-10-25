@@ -215,16 +215,40 @@ Presentation  →  Application  →  Domain  ←  Infrastructure
 
 ## Testing
 
-- **Total Tests**: 45
-- **Line Coverage**: 47.5%
-- **Branch Coverage**: 71.4%
-- **Method Coverage**: 84.2%
+### Test Metrics
 
-Test coverage by layer:
-- Domain Entities: 100%
-- Application Services: 100%
-- Infrastructure Repositories: 100%
-- Presentation Controllers: 100%
+| Metric | Coverage | Details |
+|--------|----------|---------|
+| **Total Tests** | 45 | All passing |
+| **Line Coverage** | 47.5% | 272 / 572 lines |
+| **Branch Coverage** | 71.4% | 35 / 49 branches |
+| **Method Coverage** | 84.2% | 64 / 76 methods |
+
+### Coverage by Layer
+
+| Layer | Coverage | Components |
+|-------|----------|------------|
+| **Domain** | 100% | Entities |
+| **Application** | 100% | Services, DTOs |
+| **Infrastructure** | 100% | Repositories |
+| **Presentation** | 100% | Controllers |
+| **Unit of Work** | 90.6% | Transaction management |
+| **Framework** | 0% | Program.cs, EF Core, Migrations |
+
+### Test Distribution
+
+- Service Layer: 13 tests
+- Controller Layer: 14 tests  
+- Repository Layer: 9 tests
+- Unit of Work: 9 tests
+
+### Untested Components
+
+Components intentionally not covered by unit tests:
+- Application entry point (Program.cs)
+- Entity Framework infrastructure (AppDbContext)
+- Auto-generated migrations
+- Development seed data (DbSeeder)
 
 ## Troubleshooting
 
